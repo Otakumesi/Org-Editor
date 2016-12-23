@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MyEditor from './components/myeditor';
+import toMarkdown from 'to-markdown';
 import './App.css';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
@@ -7,20 +8,24 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            title: "",
             htmlContent: "",
             orgContent: ""
         };
     }
 
     handleSelect(format) {
-        event.preventDefault();
+        let title = this.state.title;
         switch (format) {
         case "html":
-            this.handleDownload('text.html', this.state.htmlContent, 'text/html');
+            this.handleDownload(title + '.html', this.state.htmlContent, 'text/html');
             break;
         case "markdown":
+            let md = toMarkdown(this.state.htmlContent);
+            this.handleDownload(title + '.md', md, 'text/plain');
             break;
         case "org-mode":
+            this.handleDownload(title + '.org', this.state.orgContent, 'text/plain');
             break;
         default:
             break;
@@ -29,6 +34,7 @@ class App extends Component {
 
     UpdateContent(content) {
         this.setState(content);
+        console.log(this.state);
     }
 
     handleDownload(filename, content, type) {
@@ -39,7 +45,12 @@ class App extends Component {
             navigator.msSaveBlob(blob, filename);
         } else {
             var url = window.URL.createObjectURL(blob);
-            window.location.href = url;
+            var a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            a.download = filename;
+            a.click();
+            url.revokeObjectURL();
         }
     }
 

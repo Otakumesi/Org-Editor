@@ -1,3 +1,22 @@
 .App {
-  text-align: left;
+    text-align: left;
+    height: 100%;
+    min-height: 100%;
+}
+
+.container {
+    display: table;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.row {
+    height: 100%;
+    display: table-row;
+}
+
+.row .no-float {
+    display: table-cell;
+    float: none;
 }

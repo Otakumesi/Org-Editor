@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
-import { Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import * as org from 'org';
 
 var orgParser = new org.Parser();
@@ -10,6 +10,7 @@ class MyEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            title: "",
             editorState: EditorState.createEmpty(),
             previewState: ""
         };
@@ -18,9 +19,11 @@ class MyEditor extends Component {
             var content = editorState.getCurrentContent();
             var orgText = content.getPlainText();
             var html = this.org2html(orgText);
-            var text = `${html.titleHTML}\n${html.contentHTML}`;
+            var title = html.title;
+            var text = `${html.titleHTML}<hr />${html.contentHTML}`;
 
             this.props.UpdateContent({
+                title: title,
                 htmlContent: text,
                 orgContent: orgText
             });
@@ -33,7 +36,7 @@ class MyEditor extends Component {
     }
 
     componentDidMount() {
-        console.log(ReactDOM.findDOMNode(this.refs.editor));
+        this.refs.editor.focus();
     }
 
     org2html(text) {
@@ -49,17 +52,20 @@ class MyEditor extends Component {
 
     render() {
         return (
-            <div className="MyEditor">
-              <Col xs={12} md={6} className="partition">
-                <Editor
-                  autoFocus
-                  ref="editor"
-                  editorState={this.state.editorState}
-                  onChange={this.onChange.bind(this)} />
-              </Col>
-              <Col xs={12} md={6}>
-                <div className="Preview" dangerouslySetInnerHTML={{__html: this.state.previewState}}></div>
-              </Col>
+            <div className="MyEditor container">
+              <Row>
+                <Col md={6} className="no-float">
+                  <Editor
+                    autoFocus
+                    ref="editor"
+                    editorState={this.state.editorState}
+                    onChange={this.onChange.bind(this)} />
+                </Col>
+                <Col md={6} className="no-float">
+                  <div className="Preview"
+                       dangerouslySetInnerHTML={{__html: this.state.previewState}}></div>
+                </Col>
+              </Row>
             </div>
         );
     }
