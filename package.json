@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "provide": "npm run build && rm -r docs/ && cp -r build/ docs/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
