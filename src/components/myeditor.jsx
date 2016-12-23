@@ -18,7 +18,13 @@ class MyEditor extends Component {
             var content = editorState.getCurrentContent();
             var orgText = content.getPlainText();
             var html = this.org2html(orgText);
-            var text = `${html.contentHTML}`;
+            var text = `${html.titleHTML}\n${html.contentHTML}`;
+
+            this.props.UpdateContent({
+                htmlContent: text,
+                orgContent: orgText
+            });
+
             this.setState({
                 editorState: editorState,
                 previewState: text
@@ -27,8 +33,7 @@ class MyEditor extends Component {
     }
 
     componentDidMount() {
-        let input = ReactDOM.findDOMNode(this.ref.editor);
-        input.focus();
+        console.log(ReactDOM.findDOMNode(this.refs.editor));
     }
 
     org2html(text) {
@@ -45,8 +50,9 @@ class MyEditor extends Component {
     render() {
         return (
             <div className="MyEditor">
-              <Col xs={12} md={6}>
+              <Col xs={12} md={6} className="partition">
                 <Editor
+                  autoFocus
                   ref="editor"
                   editorState={this.state.editorState}
                   onChange={this.onChange.bind(this)} />
