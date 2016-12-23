@@ -2,6 +2,7 @@
   "name": "org-editor",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Otakumesi.github.io/Org-Editor",
   "devDependencies": {
     "react-scripts": "0.8.4"
   },
